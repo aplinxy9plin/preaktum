@@ -99,43 +99,15 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate{
         if let imageData = photo.fileDataRepresentation(){
             print(imageData)
             image = UIImage(data: imageData)
-            imageView.image = image
+            let scale = 768 / (image?.size.width)!
+            let newHeight = (image?.size.height)! * scale
+            UIGraphicsBeginImageContext(CGSize(width: 768, height: newHeight))
+            image?.draw(in: CGRect(x: 0, y: 0, width: 768, height: newHeight))
             
-            /*let sessionConfig = URLSessionConfiguration.default
+            let newImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
             
-            /* Create session, and optionally set a URLSessionDelegate. */
-            let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
-            
-            /* Create the Request:
-             Request (POST http://localhost/upload/upload.php)
-             */
-            
-            guard var URL = URL(string: "http://192.168.0.101/upload/upload.php") else {return}
-            var request = URLRequest(url: URL)
-            request.httpMethod = "POST"
-            
-            // Headers
-            
-            request.addValue("image/jpeg", forHTTPHeaderField: "Content-Type")
-            
-            //request.httpBody(param, filePathKey: "file", imageDataKey: imageData!, boundary: boundary)
-            /* Start a new Task */
-            let task = session.dataTask(with: request, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
-                if (error == nil) {
-                    // Success
-                    let statusCode = (response as! HTTPURLResponse).statusCode
-                    print("URL Session Task Succeeded: HTTP \(statusCode)")
-                }
-                else {
-                    // Failure
-                    print("URL Session Task Failed: %@", error!.localizedDescription);
-                }
-            })
-            task.resume()
-            session.finishTasksAndInvalidate()
-            */
-            
-            //sendRequest(imageData: imageData)
+            imageView.image = newImage
             if let image = image {
                 let imageData1 = UIImageJPEGRepresentation(imageView.image!, 1.0)
                 

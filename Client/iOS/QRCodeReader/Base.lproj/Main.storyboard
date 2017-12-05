@@ -174,13 +174,10 @@
                     </view>
                     <navigationItem key="navigationItem" title="Добавить товар в корзину" id="w3H-Nw-abr">
                         <barButtonItem key="leftBarButtonItem" title="Item" style="plain" id="Mzt-Y6-fTf">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4j5-B5-8eJ">
-                                <rect key="frame" x="16" y="0.0" width="48" height="44"/>
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4j5-B5-8eJ">
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <state key="normal" image="basket_button.png">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
+                                <state key="normal" title="Назад"/>
                                 <connections>
                                     <action selector="showTableView:" destination="B0K-bi-dGX" eventType="touchUpInside" id="bP0-sj-6jX"/>
                                     <segue destination="qmN-2A-7rh" kind="modal" id="F0l-W7-db4"/>
@@ -225,7 +222,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="FMj-Tv-DPQ">
+                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="FMj-Tv-DPQ">
                             <rect key="frame" x="0.0" y="113" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Купить"/>
@@ -343,10 +340,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="basket_button.png" width="48" height="48"/>
         <image name="choose_shop.png" width="522" height="53"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="7bh-NU-Amv"/>
-    </inferredMetricsTieBreakers>
 </document>
