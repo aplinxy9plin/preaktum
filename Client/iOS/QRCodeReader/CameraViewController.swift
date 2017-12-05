@@ -12,6 +12,7 @@ import AVFoundation
 class CameraViewController: UIViewController {
     
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var label: UILabel!
     
     var captureSession = AVCaptureSession()
     var backCamera: AVCaptureDevice?
@@ -32,6 +33,7 @@ class CameraViewController: UIViewController {
         startRunningCaptureSession()
         
         view.bringSubview(toFront: imageView)
+        view.bringSubview(toFront: label)
         // Do any additional setup after loading the view.
     }
     func setupCaptureSession(){
@@ -78,9 +80,36 @@ class CameraViewController: UIViewController {
     @IBAction func cameraButton_TouchUpInside(_ sender: Any) {
         let settings = AVCapturePhotoSettings()
         photoOutput?.capturePhoto(with: settings, delegate: self)
+        let json: [String: Any] = ["type": "add", "barcode": 2281337]
+        self.getRequest(json: json)
         //performSegue(withIdentifier: "showPhoto_Segue", sender: nil)
     }
     
+    func getRequest(json: [String: Any]) -> String{
+        let jsonData = try? JSONSerialization.data(withJSONObject: json)
+        
+        // create post request
+        let url = URL(string: "http://13.95.174.54/server/test.php")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        // insert json data to the request
+        request.httpBody = jsonData
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data")
+                return
+            }
+            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
+            if let responseJSON = responseJSON as? [String: Any] {
+                print(responseJSON)
+            }
+        }
+        
+        task.resume()
+        return "123"
+    }
 
     /*
     // MARK: - Navigation
@@ -99,7 +128,50 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate{
             print(imageData)
             image = UIImage(data: imageData)
             imageView.image = image
+            //let strBase64 = imageData.base64EncodedString(options: .lineLength64Characters)
+            //let json: [String: Any] = ["type": "add"]
+            //getRequest1(json: json)
+            //print(strBase64)
             //performSegue(withIdentifier: "showPhoto_Segue", sender: nil)
         }
     }
+    /*func send_image(){
+        var imageData1 = UIImageJPEGRepresentation(imageView.image!, 90)
+        var url = NSURL(string: "http://www.i35.club.tw/old_tree/test/uplo.php")
+        var request = NSMutableURLRequest(url: url as! URL)
+        request.httpMethod = "POST"
+        request.HTTPBody = NSData.dataWithData(UIImagePNGRepresentation(imageData1))
+        
+        var response: URLResponse? = nil
+        var error: NSError? = nil
+        let reply = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&error)
+        
+        let results = NSString(data:reply!, encoding:NSUTF8StringEncoding)
+        println("API Response: \(results)")
+    }
+    func getRequest1(json: [String: Any]) -> String{
+        let jsonData = try? JSONSerialization.data(withJSONObject: json)
+        
+        // create post request
+        let url = URL(string: "http://192.168.0.101/image.php")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        // insert json data to the request
+        request.httpBody = jsonData
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data")
+                return
+            }
+            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
+            if let responseJSON = responseJSON as? [String: Any] {
+                print(responseJSON)
+            }
+        }
+        
+        task.resume()
+        return "123"
+    }*/
 }

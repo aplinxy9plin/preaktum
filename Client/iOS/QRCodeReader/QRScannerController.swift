@@ -181,7 +181,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
         let jsonData = try? JSONSerialization.data(withJSONObject: json)
         
         // create post request
-        let url = URL(string: "http://13.95.174.54/server/request.php")!
+        let url = URL(string: "http://top4ek.000webhostapp.com/test/")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
