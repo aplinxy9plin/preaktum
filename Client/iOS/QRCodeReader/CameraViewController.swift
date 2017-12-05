@@ -12,7 +12,6 @@ import AVFoundation
 class CameraViewController: UIViewController {
     
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var label: UILabel!
     
     var captureSession = AVCaptureSession()
     var backCamera: AVCaptureDevice?
@@ -33,7 +32,6 @@ class CameraViewController: UIViewController {
         startRunningCaptureSession()
         
         view.bringSubview(toFront: imageView)
-        view.bringSubview(toFront: label)
         // Do any additional setup after loading the view.
     }
     func setupCaptureSession(){
@@ -80,36 +78,9 @@ class CameraViewController: UIViewController {
     @IBAction func cameraButton_TouchUpInside(_ sender: Any) {
         let settings = AVCapturePhotoSettings()
         photoOutput?.capturePhoto(with: settings, delegate: self)
-        let json: [String: Any] = ["type": "add", "barcode": 2281337]
-        self.getRequest(json: json)
         //performSegue(withIdentifier: "showPhoto_Segue", sender: nil)
     }
     
-    func getRequest(json: [String: Any]) -> String{
-        let jsonData = try? JSONSerialization.data(withJSONObject: json)
-        
-        // create post request
-        let url = URL(string: "http://13.95.174.54/server/test.php")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        // insert json data to the request
-        request.httpBody = jsonData
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data")
-                return
-            }
-            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
-            if let responseJSON = responseJSON as? [String: Any] {
-                print(responseJSON)
-            }
-        }
-        
-        task.resume()
-        return "123"
-    }
 
     /*
     // MARK: - Navigation
@@ -123,55 +94,92 @@ class CameraViewController: UIViewController {
 
 }
 extension CameraViewController: AVCapturePhotoCaptureDelegate{
+    
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let imageData = photo.fileDataRepresentation(){
             print(imageData)
             image = UIImage(data: imageData)
             imageView.image = image
-            //let strBase64 = imageData.base64EncodedString(options: .lineLength64Characters)
-            //let json: [String: Any] = ["type": "add"]
-            //getRequest1(json: json)
-            //print(strBase64)
-            //performSegue(withIdentifier: "showPhoto_Segue", sender: nil)
+            
+            /*let sessionConfig = URLSessionConfiguration.default
+            
+            /* Create session, and optionally set a URLSessionDelegate. */
+            let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+            
+            /* Create the Request:
+             Request (POST http://localhost/upload/upload.php)
+             */
+            
+            guard var URL = URL(string: "http://192.168.0.101/upload/upload.php") else {return}
+            var request = URLRequest(url: URL)
+            request.httpMethod = "POST"
+            
+            // Headers
+            
+            request.addValue("image/jpeg", forHTTPHeaderField: "Content-Type")
+            
+            //request.httpBody(param, filePathKey: "file", imageDataKey: imageData!, boundary: boundary)
+            /* Start a new Task */
+            let task = session.dataTask(with: request, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
+                if (error == nil) {
+                    // Success
+                    let statusCode = (response as! HTTPURLResponse).statusCode
+                    print("URL Session Task Succeeded: HTTP \(statusCode)")
+                }
+                else {
+                    // Failure
+                    print("URL Session Task Failed: %@", error!.localizedDescription);
+                }
+            })
+            task.resume()
+            session.finishTasksAndInvalidate()
+            */
+            
+            //sendRequest(imageData: imageData)
+            if let image = image {
+                let imageData1 = UIImageJPEGRepresentation(imageView.image!, 1.0)
+                
+                let urlString = "http://192.168.0.101/upload/upload.php"
+                let session = URLSession(configuration: URLSessionConfiguration.default)
+                
+                let mutableURLRequest = NSMutableURLRequest(url: NSURL(string: urlString)! as URL)
+                
+                mutableURLRequest.httpMethod = "POST"
+                
+                let boundaryConstant = "----------------12345";
+                let contentType = "multipart/form-data;boundary=" + boundaryConstant
+                mutableURLRequest.setValue(contentType, forHTTPHeaderField: "Content-Type")
+                
+                // create upload data to send
+                let uploadData = NSMutableData()
+                
+                // add image
+                uploadData.append("\r\n--\(boundaryConstant)\r\n".data(using: String.Encoding.utf8)!)
+                uploadData.append("Content-Disposition: form-data; name=\"picture\"; filename=\"image.jpg\"\r\n".data(using: String.Encoding.utf8)!)
+                uploadData.append("Content-Type: image/jpeg\r\n\r\n".data(using: String.Encoding.utf8)!)
+                uploadData.append(imageData1!)
+                uploadData.append("\r\n--\(boundaryConstant)--\r\n".data(using: String.Encoding.utf8)!)
+                
+                mutableURLRequest.httpBody = uploadData as Data
+                
+                
+                let task = session.dataTask(with: mutableURLRequest as URLRequest, completionHandler: { (data, response, error) -> Void in
+                    if error == nil {
+                        print("SUCCESS")
+                        let statusCode = (response as! HTTPURLResponse).statusCode
+                        print(statusCode)
+                        let responseString = String(data: data!, encoding: .utf8)
+                        print("responseString = \(String(describing: responseString))")
+                        //print(String(describing: response))
+                        // Image uploaded
+                    }else{
+                        print("ERRORRRR")
+                    }
+                })
+                
+                task.resume()
+                
+            }
         }
     }
-    /*func send_image(){
-        var imageData1 = UIImageJPEGRepresentation(imageView.image!, 90)
-        var url = NSURL(string: "http://www.i35.club.tw/old_tree/test/uplo.php")
-        var request = NSMutableURLRequest(url: url as! URL)
-        request.httpMethod = "POST"
-        request.HTTPBody = NSData.dataWithData(UIImagePNGRepresentation(imageData1))
-        
-        var response: URLResponse? = nil
-        var error: NSError? = nil
-        let reply = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&error)
-        
-        let results = NSString(data:reply!, encoding:NSUTF8StringEncoding)
-        println("API Response: \(results)")
-    }
-    func getRequest1(json: [String: Any]) -> String{
-        let jsonData = try? JSONSerialization.data(withJSONObject: json)
-        
-        // create post request
-        let url = URL(string: "http://192.168.0.101/image.php")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        // insert json data to the request
-        request.httpBody = jsonData
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data")
-                return
-            }
-            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
-            if let responseJSON = responseJSON as? [String: Any] {
-                print(responseJSON)
-            }
-        }
-        
-        task.resume()
-        return "123"
-    }*/
 }

@@ -11,6 +11,8 @@ import AVFoundation
 
 class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
 
+    @IBOutlet weak var navigationBAR: UINavigationItem!
+    @IBOutlet weak var background: UIImageView!
     @IBOutlet var messageLabel:UILabel!
     @IBOutlet var topbar: UIView!
     @IBOutlet weak var switchOutlet: UISwitch!
@@ -37,8 +39,13 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
                         AVMetadataObject.ObjectType.pdf417,
                         AVMetadataObject.ObjectType.qr]
     
+    @IBOutlet weak var basket_button: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
+        background.image = #imageLiteral(resourceName: "barcode_back.png")
+        //basket_button.
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        //navigationBAR.barTi
         //global.products.removeFirst()
         //print(global.products[0])
         tableView.isHidden = true
@@ -73,13 +80,12 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             captureSession?.startRunning()
             
             // Move the message label and top bar to the front
-            view.bringSubview(toFront: messageLabel)
-            view.bringSubview(toFront: topbar)
-            view.bringSubview(toFront: switchOutlet)
-            view.bringSubview(toFront: barcodeLabel)
-            view.bringSubview(toFront: imageRecOutlet)
+            //view.bringSubview(toFront: messageLabel)
+            //view.bringSubview(toFront: topbar)
+            //view.bringSubview(toFront: imageRecOutlet)
             view.bringSubview(toFront: tableView)
-            view.bringSubview(toFront: shotButton)
+            //view.bringSubview(toFront: shotButton)
+            view.bringSubview(toFront: background)
 
             // Initialize QR Code Frame to highlight the QR code
             qrCodeFrameView = UIView()
@@ -156,7 +162,8 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
                     }
                     global.products.append(metadataObj.stringValue!)
                     let json: [String: Any] = ["type": "add", "barcode": metadataObj.stringValue!]
-                    self.getRequest(json: json)
+                    //self.getRequest(json: json)
+                    self.sendRequest()
                     print(metadataObj.stringValue!)
                     //productsStruct.countP += 1å
                     self.captureSession?.startRunning()
@@ -177,29 +184,58 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             }
         }
     }
-    func getRequest(json: [String: Any]) -> String{
-        let jsonData = try? JSONSerialization.data(withJSONObject: json)
+    func sendRequest() {
+        /* Configure session, choose between:
+         * defaultSessionConfiguration
+         * ephemeralSessionConfiguration
+         * backgroundSessionConfigurationWithIdentifier:
+         And set session-wide properties, such as: HTTPAdditionalHeaders,
+         HTTPCookieAcceptPolicy, requestCachePolicy or timeoutIntervalForRequest.
+         */
+        let sessionConfig = URLSessionConfiguration.default
         
-        // create post request
-        let url = URL(string: "http://top4ek.000webhostapp.com/test/")!
-        var request = URLRequest(url: url)
+        /* Create session, and optionally set a URLSessionDelegate. */
+        let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+        
+        /* Create the Request:
+         Request (POST http://13.95.174.54/server/test.php)
+         */
+        
+        guard let URL = URL(string: "http://192.168.0.101/upload/upload.php") else {return}
+        var request = URLRequest(url: URL)
         request.httpMethod = "POST"
         
-        // insert json data to the request
-        request.httpBody = jsonData
+        // Headers
         
+        //request.addValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+        request.addValue("image/jpeg", forHTTPHeaderField: "Content-Type")
+
+        // JSON Body
+        
+        let bodyObject: [String : Any] = [
+            "test": "xuy"
+        ]
+        //request.httpBody = try! JSONSerialization.data(withJSONObject: bodyObject, options: [])
+        
+        //NSData.dataWithData(UIImagePNGRepresentation(imageData))
+        
+        /* Start a new Task */
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data")
+            guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                print("error=\(String(describing: error))")
                 return
             }
-            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
-            if let responseJSON = responseJSON as? [String: Any] {
-                print(responseJSON)
+            
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                print("response = \(String(describing: response))")
             }
+            
+            let responseString = String(data: data, encoding: .utf8)
+            print("responseString = \(String(describing: responseString!))")
         }
-        
         task.resume()
-        return "123"
+        session.finishTasksAndInvalidate()
     }
 }

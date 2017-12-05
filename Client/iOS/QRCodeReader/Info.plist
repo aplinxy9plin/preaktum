@@ -6,7 +6,7 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
-			<key>146312941</key>
+			<key>192.168.0.101</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
 				<true/>
