@@ -18,13 +18,17 @@ class CameraViewController: UIViewController {
     var frontCamera: AVCaptureDevice?
     var currentCamera: AVCaptureDevice?
     
+    @IBOutlet weak var cameraButton: UIButton!
+    @IBOutlet weak var image_background: UIImageView!
     var photoOutput: AVCapturePhotoOutput?
     
     var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
     var image: UIImage?
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        imageView.isHidden = true
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        self.tabBarController?.tabBar.isHidden = true
         setupCaptureSession()
         setupDevice()
         setupInputOutput()
@@ -32,6 +36,9 @@ class CameraViewController: UIViewController {
         startRunningCaptureSession()
         
         view.bringSubview(toFront: imageView)
+        view.bringSubview(toFront: image_background)
+        view.bringSubview(toFront: cameraButton)
+
         // Do any additional setup after loading the view.
     }
     func setupCaptureSession(){
@@ -97,12 +104,29 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate{
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let imageData = photo.fileDataRepresentation(){
+            captureSession.stopRunning()
+            // Create the alert controller
+            let alertController = UIAlertController(title: "", message: "", preferredStyle: .alert)
+            //create an activity indicator
+            let indicator = UIActivityIndicatorView(frame: alertController.view.bounds)
+            indicator.color = UIColor.black
+            let transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+            indicator.transform = transform
+            indicator.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            //add the activity indicator as a subview of the alert controller's view
+            alertController.view.addSubview(indicator)
+            //alertController.view.setValue(indicator, forKey: "alertController")
+            indicator.isUserInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
+            indicator.startAnimating()
+            present(alertController, animated: true, completion: nil)
+ 
+            
             print(imageData)
             image = UIImage(data: imageData)
-            let scale = 768 / (image?.size.width)!
+            let scale = 1500 / (image?.size.width)!
             let newHeight = (image?.size.height)! * scale
-            UIGraphicsBeginImageContext(CGSize(width: 768, height: newHeight))
-            image?.draw(in: CGRect(x: 0, y: 0, width: 768, height: newHeight))
+            UIGraphicsBeginImageContext(CGSize(width: 1500, height: newHeight))
+            image?.draw(in: CGRect(x: 0, y: 0, width: 1500, height: newHeight))
             
             let newImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
@@ -111,7 +135,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate{
             if let image = image {
                 let imageData1 = UIImageJPEGRepresentation(imageView.image!, 1.0)
                 
-                let urlString = "http://192.168.0.101/upload/upload.php"
+                let urlString = "http://13.95.174.54/server/Server-for-preactum/upload.php"
                 let session = URLSession(configuration: URLSessionConfiguration.default)
                 
                 let mutableURLRequest = NSMutableURLRequest(url: NSURL(string: urlString)! as URL)
@@ -131,17 +155,70 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate{
                 uploadData.append("Content-Type: image/jpeg\r\n\r\n".data(using: String.Encoding.utf8)!)
                 uploadData.append(imageData1!)
                 uploadData.append("\r\n--\(boundaryConstant)--\r\n".data(using: String.Encoding.utf8)!)
+               
+                /*
                 
+                // Create the alert controller
+                let alertController = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                //create an activity indicator
+                let indicator = UIActivityIndicatorView(frame: alertController.view.bounds)
+                indicator.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                
+                //add the activity indicator as a subview of the alert controller's view
+                alertController.view.addSubview(indicator)
+                indicator.isUserInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
+                var statusCode = 0
+                while(statusCode == 0){
+                    indicator.startAnimating()
+                }
+                indicator.stopAnimating()
+                let okAction = UIAlertAction(title: "Add", style: UIAlertActionStyle.default) {
+                    UIAlertAction in
+                    
+                }
+                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) {
+                    UIAlertAction in
+                    
+                }
+                alertController.addAction(okAction)
+                alertController.addAction(cancelAction)
+                */
+ 
+ 
                 mutableURLRequest.httpBody = uploadData as Data
                 
                 
                 let task = session.dataTask(with: mutableURLRequest as URLRequest, completionHandler: { (data, response, error) -> Void in
                     if error == nil {
                         print("SUCCESS")
-                        let statusCode = (response as! HTTPURLResponse).statusCode
+                        alertController.dismiss(animated: true, completion: nil)
+                        var statusCode = (response as! HTTPURLResponse).statusCode
                         print(statusCode)
                         let responseString = String(data: data!, encoding: .utf8)
                         print("responseString = \(String(describing: responseString))")
+                        // Create the alert controller
+                        let alertController = UIAlertController(title: responseString, message: "Цена: $3.75", preferredStyle: .alert)
+                        let okAction = UIAlertAction(title: "Добавить", style: UIAlertActionStyle.default) {
+                            UIAlertAction in
+                            if(QRScannerController.global.products[0] == "text"){
+                                QRScannerController.global.products.removeFirst()
+                            }
+                            let test = String(describing: responseString)
+                            QRScannerController.global.products.append(test)
+                            //productsStruct.countP += 1å
+                            self.captureSession.startRunning()
+                        }
+                        let cancelAction = UIAlertAction(title: "Отмена", style: UIAlertActionStyle.cancel) {
+                            UIAlertAction in
+                            for x in QRScannerController.global.products{
+                                print(x)
+                            }
+                            self.captureSession.startRunning()
+                        }
+                        alertController.addAction(okAction)
+                        alertController.addAction(cancelAction)
+                        self.present(alertController, animated: true, completion: nil)
+
                         //print(String(describing: response))
                         // Image uploaded
                     }else{

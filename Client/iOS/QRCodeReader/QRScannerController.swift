@@ -14,14 +14,12 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     @IBOutlet weak var navigationBAR: UINavigationItem!
     @IBOutlet weak var background: UIImageView!
     @IBOutlet var messageLabel:UILabel!
-    @IBOutlet var topbar: UIView!
-    @IBOutlet weak var switchOutlet: UISwitch!
-    @IBOutlet weak var barcodeLabel: UILabel!
-    @IBOutlet weak var imageRecOutlet: UILabel!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var shotButton: UIButton!
     struct global {
         static var products = ["text"]
+        static var card = ""
+        static var cardName = ""
+        static var cardCVV = ""
+        static var cardDate = ""
     }
     var captureSession:AVCaptureSession?
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
@@ -42,13 +40,13 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     @IBOutlet weak var basket_button: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tabBarController?.tabBar.isHidden = true
         background.image = #imageLiteral(resourceName: "barcode_back.png")
         //basket_button.
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         //navigationBAR.barTi
         //global.products.removeFirst()
         //print(global.products[0])
-        tableView.isHidden = true
         // Get an instance of the AVCaptureDevice class to initialize a device object and provide the video as the media type parameter.
         let captureDevice = AVCaptureDevice.default(for: AVMediaType.video)
         
@@ -80,11 +78,6 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             captureSession?.startRunning()
             
             // Move the message label and top bar to the front
-            //view.bringSubview(toFront: messageLabel)
-            //view.bringSubview(toFront: topbar)
-            //view.bringSubview(toFront: imageRecOutlet)
-            view.bringSubview(toFront: tableView)
-            //view.bringSubview(toFront: shotButton)
             view.bringSubview(toFront: background)
 
             // Initialize QR Code Frame to highlight the QR code
@@ -102,38 +95,10 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             //print(error)
             return
         }
-        tableView.delegate = self as? UITableViewDelegate
-        tableView.dataSource = self as? UITableViewDataSource
-    }
-
-    @IBAction func shot(_ sender: Any) {
-        captureSession?.stopRunning()
-        // Make sure capturePhotoOutput is valid
-        guard let capturePhotoOutput = self.capturePhotoOutput else { return }
-        
-        // Get an instance of AVCapturePhotoSettings class
-        let photoSettings = AVCapturePhotoSettings()
-        
-        // Set photo settings for our need
-        photoSettings.isAutoStillImageStabilizationEnabled = true
-        photoSettings.isHighResolutionPhotoEnabled = true
-        photoSettings.flashMode = .auto
-        
-        // Call capturePhoto method by passing our photo settings and a delegate implementing AVCapturePhotoCaptureDelegate
-        capturePhotoOutput.capturePhoto(with: photoSettings, delegate: self as! AVCapturePhotoCaptureDelegate)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    @IBAction func showTableView(_ sender: Any) {
-        /*if(tableView.isHidden){
-            self.captureSession?.stopRunning()
-            tableView.isHidden = false
-        }else{
-            self.captureSession?.startRunning()
-            tableView.isHidden = true
-        }*/
     }
     // MARK: - AVCaptureMetadataOutputObjectsDelegate Methods
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
@@ -154,8 +119,15 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
             if metadataObj.stringValue != nil {
                 messageLabel.text = metadataObj.stringValue
                 // Create the alert controller
-                let alertController = UIAlertController(title: "Title", message: "Price: $100", preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "Add", style: UIAlertActionStyle.default) {
+                let alertController = UIAlertController(title: "Название", message: "Цена: $100", preferredStyle: .alert)
+                //create an activity indicator
+                let indicator = UIActivityIndicatorView(frame: alertController.view.bounds)
+                indicator.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                //add the activity indicator as a subview of the alert controller's view
+                alertController.view.addSubview(indicator)
+                indicator.isUserInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
+                indicator.startAnimating()
+                let okAction = UIAlertAction(title: "Добавить", style: UIAlertActionStyle.default) {
                     UIAlertAction in
                     if(global.products[0] == "text"){
                         global.products.removeFirst()
@@ -169,7 +141,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
                     self.captureSession?.startRunning()
                     self.messageLabel.text = "No QR/barcode is detected"
                 }
-                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) {
+                let cancelAction = UIAlertAction(title: "Отмена", style: UIAlertActionStyle.cancel) {
                     UIAlertAction in
                     for x in global.products{
                         print(x)

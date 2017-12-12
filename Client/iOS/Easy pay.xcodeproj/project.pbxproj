@@ -18,6 +18,11 @@
 		57928EFF1FD6C57E0064F3D2 /* barcode_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 57928EFA1FD6C57E0064F3D2 /* barcode_back.png */; };
 		57928F001FD6C57E0064F3D2 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 57928EFB1FD6C57E0064F3D2 /* logo.png */; };
 		57928F011FD6C57E0064F3D2 /* potato_head.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 57928EFC1FD6C57E0064F3D2 /* potato_head.jpeg */; };
+		57928F3F1FD7B7890064F3D2 /* basket_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 57928F3C1FD7B7880064F3D2 /* basket_button.png */; };
+		57928F401FD7B7890064F3D2 /* camera_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 57928F3D1FD7B7880064F3D2 /* camera_button.png */; };
+		57928F411FD7B7890064F3D2 /* product_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 57928F3E1FD7B7880064F3D2 /* product_background.png */; };
+		57928F431FD7B9BF0064F3D2 /* tabMain.png in Resources */ = {isa = PBXBuildFile; fileRef = 57928F421FD7B9BF0064F3D2 /* tabMain.png */; };
+		57928F451FD8F4680064F3D2 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57928F441FD8F4680064F3D2 /* CardViewController.swift */; };
 		F4F09DB71DAF669400026BB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F09DB61DAF669400026BB2 /* AppDelegate.swift */; };
 		F4F09DBC1DAF669400026BB2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4F09DBA1DAF669400026BB2 /* Main.storyboard */; };
 		F4F09DBE1DAF669400026BB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4F09DBD1DAF669400026BB2 /* Assets.xcassets */; };
@@ -36,6 +41,11 @@
 		57928EFA1FD6C57E0064F3D2 /* barcode_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = barcode_back.png; sourceTree = "<group>"; };
 		57928EFB1FD6C57E0064F3D2 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		57928EFC1FD6C57E0064F3D2 /* potato_head.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = potato_head.jpeg; sourceTree = "<group>"; };
+		57928F3C1FD7B7880064F3D2 /* basket_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = basket_button.png; sourceTree = "<group>"; };
+		57928F3D1FD7B7880064F3D2 /* camera_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_button.png; sourceTree = "<group>"; };
+		57928F3E1FD7B7880064F3D2 /* product_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = product_background.png; sourceTree = "<group>"; };
+		57928F421FD7B9BF0064F3D2 /* tabMain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabMain.png; sourceTree = "<group>"; };
+		57928F441FD8F4680064F3D2 /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		F4F09DB31DAF669400026BB2 /* Easy Pay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Easy Pay.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4F09DB61DAF669400026BB2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4F09DBB1DAF669400026BB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -58,6 +68,7 @@
 		F4F09DAA1DAF669400026BB2 = {
 			isa = PBXGroup;
 			children = (
+				57928F441FD8F4680064F3D2 /* CardViewController.swift */,
 				57928EF01FD585C10064F3D2 /* BarcodeNavigation.swift */,
 				57928EEC1FD57EA10064F3D2 /* LaunchViewController.swift */,
 				57414DDD1FCA6F7500B9BB04 /* TableViewController.swift */,
@@ -77,6 +88,10 @@
 		F4F09DB51DAF669400026BB2 /* QRCodeReader */ = {
 			isa = PBXGroup;
 			children = (
+				57928F421FD7B9BF0064F3D2 /* tabMain.png */,
+				57928F3C1FD7B7880064F3D2 /* basket_button.png */,
+				57928F3D1FD7B7880064F3D2 /* camera_button.png */,
+				57928F3E1FD7B7880064F3D2 /* product_background.png */,
 				57928EFA1FD6C57E0064F3D2 /* barcode_back.png */,
 				57928EF91FD6C57E0064F3D2 /* choose_shop.png */,
 				57928EF81FD6C57D0064F3D2 /* loading.gif */,
@@ -157,11 +172,15 @@
 			files = (
 				57928F001FD6C57E0064F3D2 /* logo.png in Resources */,
 				57928EFE1FD6C57E0064F3D2 /* choose_shop.png in Resources */,
+				57928F411FD7B7890064F3D2 /* product_background.png in Resources */,
 				F4F09DBE1DAF669400026BB2 /* Assets.xcassets in Resources */,
 				F4F09DBC1DAF669400026BB2 /* Main.storyboard in Resources */,
+				57928F401FD7B7890064F3D2 /* camera_button.png in Resources */,
 				57928F011FD6C57E0064F3D2 /* potato_head.jpeg in Resources */,
 				57928EE71FD57C410064F3D2 /* LaunchScreen.storyboard in Resources */,
+				57928F3F1FD7B7890064F3D2 /* basket_button.png in Resources */,
 				57928EFD1FD6C57E0064F3D2 /* loading.gif in Resources */,
+				57928F431FD7B9BF0064F3D2 /* tabMain.png in Resources */,
 				57928EFF1FD6C57E0064F3D2 /* barcode_back.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -177,6 +196,7 @@
 				57928EF11FD585C10064F3D2 /* BarcodeNavigation.swift in Sources */,
 				F4F09DB71DAF669400026BB2 /* AppDelegate.swift in Sources */,
 				57928EED1FD57EA10064F3D2 /* LaunchViewController.swift in Sources */,
+				57928F451FD8F4680064F3D2 /* CardViewController.swift in Sources */,
 				5725DB951FD3B213004A2014 /* CameraViewController.swift in Sources */,
 				57414DDE1FCA6F7500B9BB04 /* TableViewController.swift in Sources */,
 				F4F09DCB1DAF6A4F00026BB2 /* QRScannerController.swift in Sources */,

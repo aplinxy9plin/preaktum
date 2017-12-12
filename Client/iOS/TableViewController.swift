@@ -12,6 +12,7 @@ class TableViewController: UITableViewController {
     var tableData = QRScannerController.global.products
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         if(tableData[0] == "text"){
             tableData.removeFirst()
         }
