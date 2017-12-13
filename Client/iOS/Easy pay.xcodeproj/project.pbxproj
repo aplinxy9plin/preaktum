@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5725DB951FD3B213004A2014 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5725DB941FD3B213004A2014 /* CameraViewController.swift */; };
 		57414DDE1FCA6F7500B9BB04 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57414DDD1FCA6F7500B9BB04 /* TableViewController.swift */; };
+		5783855A1FE0ED5C0023A1D4 /* applepay.png in Resources */ = {isa = PBXBuildFile; fileRef = 578385591FE0ED5B0023A1D4 /* applepay.png */; };
 		57928EE71FD57C410064F3D2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 57928EE61FD57C410064F3D2 /* LaunchScreen.storyboard */; };
 		57928EED1FD57EA10064F3D2 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57928EEC1FD57EA10064F3D2 /* LaunchViewController.swift */; };
 		57928EF11FD585C10064F3D2 /* BarcodeNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57928EF01FD585C10064F3D2 /* BarcodeNavigation.swift */; };
@@ -32,6 +33,7 @@
 /* Begin PBXFileReference section */
 		5725DB941FD3B213004A2014 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		57414DDD1FCA6F7500B9BB04 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		578385591FE0ED5B0023A1D4 /* applepay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = applepay.png; sourceTree = "<group>"; };
 		57928EE61FD57C410064F3D2 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		57928EEC1FD57EA10064F3D2 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		57928EF01FD585C10064F3D2 /* BarcodeNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeNavigation.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 		F4F09DB51DAF669400026BB2 /* QRCodeReader */ = {
 			isa = PBXGroup;
 			children = (
+				578385591FE0ED5B0023A1D4 /* applepay.png */,
 				57928F421FD7B9BF0064F3D2 /* tabMain.png */,
 				57928F3C1FD7B7880064F3D2 /* basket_button.png */,
 				57928F3D1FD7B7880064F3D2 /* camera_button.png */,
@@ -175,6 +178,7 @@
 				57928F411FD7B7890064F3D2 /* product_background.png in Resources */,
 				F4F09DBE1DAF669400026BB2 /* Assets.xcassets in Resources */,
 				F4F09DBC1DAF669400026BB2 /* Main.storyboard in Resources */,
+				5783855A1FE0ED5C0023A1D4 /* applepay.png in Resources */,
 				57928F401FD7B7890064F3D2 /* camera_button.png in Resources */,
 				57928F011FD6C57E0064F3D2 /* potato_head.jpeg in Resources */,
 				57928EE71FD57C410064F3D2 /* LaunchScreen.storyboard in Resources */,

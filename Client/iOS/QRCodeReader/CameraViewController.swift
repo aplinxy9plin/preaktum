@@ -135,7 +135,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate{
             if let image = image {
                 let imageData1 = UIImageJPEGRepresentation(imageView.image!, 1.0)
                 
-                let urlString = "http://13.95.174.54/server/Server-for-preactum/upload.php"
+                let urlString = "http://top4ek.000webhostapp.com/pay/upload.php"
                 let session = URLSession(configuration: URLSessionConfiguration.default)
                 
                 let mutableURLRequest = NSMutableURLRequest(url: NSURL(string: urlString)! as URL)

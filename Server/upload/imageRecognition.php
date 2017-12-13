@@ -1,5 +1,4 @@
 <?php
-echo "File is connected";
 $image = file_get_contents("output.txt"); 
 $countResult = 5;
 function createJSON($type){
@@ -38,7 +37,7 @@ function request($jsonRequest){
   return $resultDecode;
 }
 function data_base(){
-  $mysqli = new mysqli("127.0.0.1","top4ek","q2w3e4r5","shop");
+  $mysqli = new mysqli("13.95.174.54","top4ek","Top4ek2281337!","shop");
   $mysqli->set_charset("utf8");
   $result = $mysqli->query("SELECT * FROM products");
   if ($result->num_rows > 0) {
@@ -51,13 +50,13 @@ function data_base(){
   }
 }
 $db_name = data_base();
-$json = array(createJSON('LOGO_DETECTION'), createJSON('WEB_DETECTION'), createJSON('TEXT_DETECTION'), createJSON('DOCUMENT_TEXT_DETECTION'));
-var_dump(request($json[0]));
-for ($i=0; $i < 4; $i++) { 
+$json = array(createJSON('LOGO_DETECTION'));
+//var_dump(request($json[0]));
+for ($i=0; $i < 1; $i++) { 
   $encoded = json_encode(request($json[$i]), JSON_UNESCAPED_UNICODE);
   foreach ($db_name as $key) {
     if(strpos($encoded, $key) !== false){
-      echo "Название: " . $key . "\n";
+      echo "Название: " . $key;
     }
   }
 }

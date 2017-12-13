@@ -104,6 +104,7 @@ class TableViewController: UITableViewController {
     }
     @IBAction func buyButton(_ sender: Any) {
         print("Bought")
+        
         // prepare json data
        
     }
