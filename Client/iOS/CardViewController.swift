@@ -5,7 +5,7 @@
 //  Created by Никита Аплин on 07.12.2017.
 //  Copyright © 2017 AppCoda. All rights reserved.
 //
-
+/*
 import UIKit
 // Put this piece of code anywhere you like
 extension UIViewController {
@@ -85,3 +85,4 @@ class CardViewController: UIViewController {
     */
 
 }
+*/
